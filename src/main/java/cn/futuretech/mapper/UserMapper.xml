@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.futuretech.mapper.UserMapper">
+
+	<!-- 插入用户 -->
+	<insert id="registerByUseridAndPassword" parameterType="cn.futuretech.domain.User">
+		insert into user( userid, PASSWORD,
+		email,
+		gmt_create,
+		gmt_modified, 
+		checkNum)
+		VALUES ( 
+		#{userid}, 
+		#{password},
+		#{email},
+		#{gmtCreate},
+		#{gmtModified},
+		#{checkNum}
+		)
+	</insert>
+	
+	<!-- 根据用户id查找用户 -->
+	<select id="findUserByUserid" resultType="cn.futuretech.domain.User" parameterType="String">
+        select * from user where userid = #{userid}
+    </select>
+    
+    
+    <!-- 根据用户id删除用户 -->
+    <delete id="deleteUserById" parameterType="String">
+    	delete from user where userid = #{userid}
+    </delete>
+    
+    <!-- 根据用户id更新用户验证码 -->
+    <update id="updateUserCheckNumByUserid" parameterType="cn.futuretech.domain.User">
+    	update user set user.checkNum = #{checkNum}, user.gmt_modified = #{gmtModified} where user.userid = #{userid}
+    </update>
+
+</mapper>
