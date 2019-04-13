@@ -25,63 +25,59 @@ public class MailUtil implements Runnable {
 		this.email = email;
 		this.code = code;
 	}
-
-	/* ========线程============ */
+	@Override
 	public void run() {
-		// 0.1 确定连接位置
-		Properties props = new Properties();
-		// 获取163邮箱smtp服务器的地址，
-		props.setProperty("mail.host", "smtp.163.com");
-		// 是否进行权限验证。
-		props.setProperty("mail.smtp.auth", "true");
+		// 收件人电子邮箱
 
-		// 0.2确定权限（账号和密码）
-		Authenticator authenticator = new Authenticator() {
-			@Override
-			public PasswordAuthentication getPasswordAuthentication() {
-				// 填写自己的163邮箱的登录帐号和授权密码，授权密码的获取，在后面会进行讲解。
-				return new PasswordAuthentication("18037088716@163.com", "sc19981113");
-			}
-		};
+        // 发件人电子邮箱
+        //String from = "sk308269317@gmail.com";
 
-		// 1 获得连接
-		/**
-		 * props：包含配置信息的对象，Properties类型 配置邮箱服务器地址、配置是否进行权限验证(帐号密码验证)等
-		 * 
-		 * authenticator：确定权限(帐号和密码)
-		 * 
-		 * 所以就要在上面构建这两个对象。
-		 */
+        // 指定发送邮件的主机为 localhost
+        String host = "smtp.qq.com";
 
-		Session session = Session.getDefaultInstance(props, authenticator);
+        // 获取系统属性
+        Properties properties = System.getProperties();
 
-		// 2 创建消息
-		Message message = new MimeMessage(session);
-		// 2.1 发件人 xxx@163.com 我们自己的邮箱地址，就是名称
-		try {
-			message.setFrom(new InternetAddress("18037088716@163.com"));
-			/**
-			 * 2.2 收件人 第一个参数： RecipientType.TO 代表收件人 RecipientType.CC 抄送 RecipientType.BCC
-			 * 暗送 比如A要给B发邮件，但是A觉得有必要给要让C也看看其内容，就在给B发邮件时，
-			 * 将邮件内容抄送给C，那么C也能看到其内容了，但是B也能知道A给C抄送过该封邮件 而如果是暗送(密送)给C的话，那么B就不知道A给C发送过该封邮件。
-			 * 第二个参数 收件人的地址，或者是一个Address[]，用来装抄送或者暗送人的名单。或者用来群发。可以是相同邮箱服务器的，也可以是不同的
-			 * 这里我们发送给我们的qq邮箱
-			 */
-			message.setRecipient(RecipientType.TO, new InternetAddress(email));
-			// 2.3 主题（标题）
-			message.setSubject("邮件的标题");
-			// 2.4 正文
-			String str = email+"： <br/>" + "您好，您的注册码如下<br/>" + code + "<br/>"
-					+ "如果不是本人，请删除邮件";
-			// 设置编码，防止发送的内容中文乱码。
-			message.setContent(str, "text/html;charset=UTF-8");
+        // 设置邮件服务器
+        properties.setProperty("mail.smtp.host", host);
+        properties.setProperty("mail.smtp.port", "587");
+        
 
-			// 3发送消息
-			Transport.send(message);
-		} catch (MessagingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        properties.put("mail.smtp.auth", "true");
+        // 获取默认session对象
+        Session session = Session.getDefaultInstance(properties, new Authenticator() {
+            public PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication("1106769044@qq.com", "jklumrtajbndidaf"); //发件人邮件用户名、授权码
+            }
+        });
 
+        try {
+            // 创建默认的 MimeMessage 对象
+            MimeMessage message = new MimeMessage(session);
+
+            // Set From: 头部头字段
+            message.setFrom(new InternetAddress("1106769044@qq.com"));
+
+            // Set To: 头部头字段
+            message.addRecipient(Message.RecipientType.TO,
+                    new InternetAddress(email));
+
+            // Set Subject: 头部头字段
+            message.setSubject("验证码");
+
+            // 设置消息体
+            message.setText("您的验证码为: " + code);
+
+            // 发送消息
+            Transport.send(message);
+            System.out.println("Sent message successfully....");
+         
+        } catch (MessagingException mex) {
+            mex.printStackTrace();
+        }
+      
+		
 	}
+
+	
 }

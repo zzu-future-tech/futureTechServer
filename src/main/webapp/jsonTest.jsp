@@ -29,7 +29,7 @@
 			type:'post',
 			url:'${ pageContext.request.contextPath }/user/insertUser.action',
 			// 数据格式是json串
-			data:'userid=18037088716@163.com&password=1998-1-1',
+			data:'userid=1106769044@qq.com&password=1998-1-1',
 			success:function(data) {
 				// 返回 json
 				alert(data)
@@ -43,7 +43,21 @@
 			type:'post',
 			url:'${ pageContext.request.contextPath }/user/avtivateUser.action',
 			// 数据格式是json串
-			data:'userid=18037088716@163.com&checkNum=3052',
+			data:'userid=1106769044@qq.com&checkNum=9715',
+			success:function(data) {
+				// 返回 json
+				alert(data)
+			}
+		});
+	}
+	
+	// 登录用户
+	function userLogin() {
+		$.ajax({
+			type:'post',
+			url:'${ pageContext.request.contextPath }/user/userLogin.action',
+			// 数据格式是json串
+			data:'userid=18037088716@163.com&password=1998-1-1',
 			success:function(data) {
 				// 返回 json
 				alert(data)
@@ -58,6 +72,7 @@
 <input type="button" onclick="requestJson()" value="请求json,输出json">
 <input type="button" onclick="responseJson()" value="请求key/value,输出json">
 <input type="button" onclick="activate()" value="激活">
+<input type="button" onclick="userLogin()" value="登录">
 
 </body>
 </html>

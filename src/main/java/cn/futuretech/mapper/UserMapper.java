@@ -36,4 +36,10 @@ public interface UserMapper {
 	 * @param userid
 	 */
 	void updateUserCheckNumByUserid(User user);
+	
+	/**
+	 * 根据用户id和用户密码查找用户
+	 * @param user
+	 */
+	User findUserByUserIdAndPassword(User user);
 }

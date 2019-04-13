@@ -34,5 +34,10 @@
     <update id="updateUserCheckNumByUserid" parameterType="cn.futuretech.domain.User">
     	update user set user.checkNum = #{checkNum}, user.gmt_modified = #{gmtModified} where user.userid = #{userid}
     </update>
+    
+    <!-- 根据用户id和用户密码查找用户 -->
+	<select id="findUserByUserIdAndPassword" resultType="cn.futuretech.domain.User" parameterType="cn.futuretech.domain.User">
+        select * from user where userid = #{userid} and password= #{password}
+    </select>
 
 </mapper>

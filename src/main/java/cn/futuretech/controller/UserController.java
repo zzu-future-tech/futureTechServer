@@ -91,12 +91,42 @@ public class UserController {
 		response.setStatus(0);
 
 		User userTemp = userService.findUserByUserid(user.getUserid());
-		if (userTemp != null) {
+		// 如果找到该用户，且该用户的未验证
+		if (userTemp != null && !userTemp.getCheckNum().equals("FFFF")) {
+			// 删除用户
 			userService.deleteUserById(user.getUserid());
+		} else if (userTemp != null && userTemp.getCheckNum().equals("FFFF")){
+			// 如果用户已验证
+			response.setStatus(0);
+			return response;
 		}
 
 		response.setStatus(userService.insertUser(user));
-
+		return response;
+	}
+	
+	/**
+	 * 用户登录方法
+	 * @param user
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/userLogin")
+	public @ResponseBody Response userLogin(User user) throws Exception {
+		
+		Response response = new Response();
+		// 根据用户id和用户密码查找用户查找用户
+		User userTemp = userService.findUserByUserIdAndPassword(user);
+		// 判断是否找到用户
+		if (userTemp == null && !userTemp.getCheckNum().equals("FFFF")) {
+			// 如果没有找到用户
+			response.setStatus(101);
+		} else {
+			// 如果找到用户
+			response.setStatus(100);
+		}
+		
+		// 返回结果值
 		return response;
 	}
 }

@@ -45,4 +45,11 @@ public interface UserService {
 	 */
 	void updateUserCheckNumByUserid(User user) throws Exception;
 	
+	/**
+	 * 根据用户id和用户密码查找用户
+	 * @param user
+	 * @throws Exception
+	 */
+	User findUserByUserIdAndPassword(User user) throws Exception;
+	
 }

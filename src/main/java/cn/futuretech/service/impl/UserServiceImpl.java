@@ -25,6 +25,9 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserMapper usermapper;
 
+	/**
+	 * 插入用户
+	 */
 	@Override
 	public int insertUser(User user) throws Exception {
 		Date date = new Date();
@@ -44,18 +47,27 @@ public class UserServiceImpl implements UserService {
 		return usermapper.registerByUseridAndPassword(user);
 	}
 
+	/**
+	 * 根据用户id查找用户
+	 */
 	@Override
 	public User findUserByUserid(String userid) throws Exception {
 		
 		return usermapper.findUserByUserid(userid);
 	}
 
+	/**
+	 * 根据用户id删除用户
+	 */
 	@Override
 	public int deleteUserById(String userid) throws Exception {
 
 		return usermapper.deleteUserById(userid);
 	}
 
+	/**
+	 * 根据用户id更新用户验证码
+	 */
 	@Override
 	public void updateUserCheckNumByUserid(User user) throws Exception {
 		Date date = new Date();
@@ -64,6 +76,15 @@ public class UserServiceImpl implements UserService {
 		user.setGmtModified(date);
 		
 		usermapper.updateUserCheckNumByUserid(user);
+	}
+
+	/**
+	 * 根据用户id和用户密码查找用户
+	 */
+	@Override
+	public User findUserByUserIdAndPassword(User user) throws Exception {
+		
+		return usermapper.findUserByUserIdAndPassword(user);
 	}
 
 }
